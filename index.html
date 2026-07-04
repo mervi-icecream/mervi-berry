@@ -284,7 +284,6 @@
 
     <div class="container">
         
-        <!-- الصفحة 1: الترحيب -->
         <div class="screen active" id="page-1">
             <div class="logo-area">
                 <div style="font-size: 80px; animation: pulse 2s infinite;">🍦</div>
@@ -299,7 +298,6 @@
             <button class="btn" onclick="navigateTo('page-2')">ابدأ التقييم الآن <i class="fas fa-arrow-left"></i></button>
         </div>
 
-        <!-- الصفحة 2: تقييم النكهات (الخطوة 1) -->
         <div class="screen" id="page-2">
             <div class="progress-container">
                 <span>الخطوة 1 من 3</span>
@@ -381,7 +379,6 @@
             </div>
         </div>
 
-        <!-- الصفحة 3: الملاحظات والاقتراحات (الخطوة 2) -->
         <div class="screen" id="page-3">
             <div class="progress-container">
                 <span>الخطوة 2 من 3</span>
@@ -389,11 +386,9 @@
                 <span>66%</span>
             </div>
 
-            <!-- صندوق الملاحظات -->
             <p style="text-align: right; margin-bottom: 8px; font-weight: bold; font-size: 16px;">هل هناك اي ملاحظات ؟ 📝</p>
             <textarea class="custom-textarea" id="notes-input" placeholder="اكتب ملاحظاتك هنا..." style="margin-bottom: 25px; height: 120px;"></textarea>
 
-            <!-- صندوق الاقتراحات -->
             <p style="text-align: right; margin-bottom: 8px; font-weight: bold; font-size: 14px;">هل هناك نكهة ترغب في رؤيتها مستقبلاً؟ 💡</p>
             <textarea class="custom-textarea" id="suggestion-input" placeholder="اكتب اقتراحك هنا..."></textarea>
 
@@ -403,7 +398,6 @@
             </div>
         </div>
 
-        <!-- الصفحة 4: كيف كانت تجربتك معنا ؟ (المحطة الأخيرة والخطوة 3) -->
         <div class="screen" id="page-4">
             <div class="progress-container">
                 <span>الخطوة 3 من 3</span>
@@ -452,7 +446,6 @@
             </div>
         </div>
 
-        <!-- الصفحة 5: شاشة النهاية (تحديث كامل بناءً على thank.png وبدون زر إعادة التقييم) -->
         <div class="screen" id="page-5">
             <div class="heart-icon" style="color: #ff2a74;">❤️</div>
             <h1 style="color: var(--primary-pink); font-size: 38px; margin-bottom: 20px; font-weight: 700;">شُكْراً لك!</h1>
@@ -465,20 +458,39 @@
 
     <div class="wave-bg"></div>
 
-    <script>
-        function navigateTo(screenId) {
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        // إعدادات Firebase الخاصة بمشروعك (mervi-berry-db)
+        const firebaseConfig = {
+            apiKey: "AIzaSyD--9rRcIZeOwoRqha46pM6uRp8AqYWs4",
+            authDomain: "mervi-berry-db.firebaseapp.com",
+            projectId: "mervi-berry-db",
+            storageBucket: "mervi-berry-db.appspot.com",
+            messagingSenderId: "1089066487686",
+            appId: "1:1089066487686:web:3912b7995c8aed1f8aa607",
+            measurementId: "G-NXQGFDN52T"
+        };
+
+        // تهيئة Firebase و Firestore
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // جعل الدوال متاحة عالمياً لتعمل مع أزرار الـ HTML المباشرة
+        window.navigateTo = function(screenId) {
             const screens = document.querySelectorAll('.screen');
             screens.forEach(screen => screen.classList.remove('active'));
             document.getElementById(screenId).classList.add('active');
         }
 
-        function selectCircle(element) {
+        window.selectCircle = function(element) {
             const siblings = element.parentElement.querySelectorAll('.rating-circle');
             siblings.forEach(sib => sib.classList.remove('selected'));
             element.classList.add('selected');
         }
 
-        function selectStars(starElement, count) {
+        window.selectStars = function(starElement, count) {
             const starContainer = starElement.parentElement;
             const stars = starContainer.querySelectorAll('i');
             stars.forEach((star, index) => {
@@ -490,12 +502,18 @@
             });
         }
 
-        function saveAndSubmit() {
+        window.saveAndSubmit = async function() {
+            // تغيير حالة الزر مؤقتاً لحين انتهاء الرفع السحابي
+            const submitBtn = document.querySelector("button[onclick='saveAndSubmit()']");
+            const originalText = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = "جاري إرسال التقييم السحابي... <i class='fas fa-spinner fa-spin'></i>";
+
             const flavors = {};
             document.querySelectorAll('.flavor-row').forEach(row => {
                 const name = row.querySelector('.flavor-info span').innerText;
                 const selected = row.querySelector('.rating-circle.selected');
-                flavors[name] = selected ? selected.innerText : "8";
+                flavors[name] = selected ? parseInt(selected.innerText) : 8;
             });
 
             const service = {};
@@ -517,12 +535,19 @@
                 suggestion: suggestion || "لا يوجد"
             };
 
-            let currentRatings = JSON.parse(localStorage.getItem('mervi_ratings')) || [];
-            currentRatings.push(evaluationData);
-            localStorage.setItem('mervi_ratings', JSON.stringify(currentRatings));
-            
-            console.log("تم حفظ التقييم بنجاح:", evaluationData);
-            navigateTo('page-5');
+            try {
+                // إرسال البيانات مباشرة لقاعدة بيانات Firestore السحابية بمجلد reviews
+                await addDoc(collection(db, "reviews"), evaluationData);
+                console.log("تم إرسال التقييم إلى السحاب بنجاح!", evaluationData);
+                
+                // التوجه لصفحة الشكر
+                window.navigateTo('page-5');
+            } catch (error) {
+                console.error("خطأ أثناء الاتصال بالسحاب: ", error);
+                alert("حدث خطأ في الاتصال، يرجى المحاولة مرة أخرى.");
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
+            }
         }
     </script>
 </body>
