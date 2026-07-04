@@ -41,7 +41,7 @@
             z-index: 0;
             pointer-events: none;
             user-select: none;
-            opacity: 0.3;
+            opacity: 0.4;
             filter: drop-shadow(0 5px 10px rgba(242, 120, 159, 0.15));
             animation: floatAnimation 6s ease-in-out infinite;
         }
@@ -103,11 +103,21 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         }
 
-        .refresh-btn { background-color: var(--btn-blue); }
-        .refresh-btn:hover { background-color: var(--btn-blue-hover); transform: translateY(-2px); }
+        .refresh-btn {
+            background-color: var(--btn-blue);
+        }
+        .refresh-btn:hover {
+            background-color: var(--btn-blue-hover);
+            transform: translateY(-2px);
+        }
 
-        .clear-btn { background-color: #e74c3c; }
-        .clear-btn:hover { background-color: #c0392b; transform: translateY(-2px); }
+        .clear-btn {
+            background-color: #e74c3c;
+        }
+        .clear-btn:hover {
+            background-color: #c0392b;
+            transform: translateY(-2px);
+        }
 
         /* كروت الإحصائيات السريعة */
         .stats-grid {
@@ -135,6 +145,10 @@
             grid-template-columns: 1fr 1fr;
             gap: 30px;
             margin-bottom: 30px;
+        }
+
+        @media (max-width: 900px) {
+            .main-grid { grid-template-columns: 1fr; }
         }
 
         .chart-section {
@@ -206,6 +220,7 @@
             border-bottom: 1px dashed #f5e6e8;
         }
         .service-stat-row:last-child { border: none; }
+
         .stars-display { color: #ffca28; font-size: 18px; }
 
         /* جداول الملاحظات والاقتراحات */
@@ -221,6 +236,10 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .feedback-tables-grid { grid-template-columns: 1fr; }
         }
 
         .table-wrapper {
@@ -263,60 +282,6 @@
             padding: 40px;
             font-style: italic;
         }
-
-        /* ======================================================= */
-        /* 📱 شاشات الهواتف والأجهزة اللوحية (Media Queries) 📱 */
-        /* ======================================================= */
-        @media (max-width: 900px) {
-            .main-grid {
-                grid-template-columns: 1fr; /* تحويل النكهات والخدمات لعمود واحد */
-                gap: 20px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            body {
-                padding: 15px 10px; /* تقليص مساحات الهوامش الخارجية */
-            }
-
-            .dash-header {
-                flex-direction: column; /* جعل الهيدر عمودي في الهاتف */
-                text-align: center;
-                gap: 15px;
-                padding: 20px;
-            }
-
-            .dash-title {
-                flex-direction: column;
-                gap: 5px;
-            }
-
-            .header-actions {
-                width: 100%;
-                justify-content: center;
-                gap: 10px;
-            }
-
-            .btn-dash {
-                flex: 1; /* جعل الأزرار تأخذ مساحات متساوية ومتناسقة مريحة للمس */
-                justify-content: center;
-                font-size: 14px;
-                padding: 12px 10px;
-            }
-
-            .feedback-tables-grid {
-                grid-template-columns: 1fr; /* تحويل صناديق الملاحظات لعمود واحد */
-            }
-
-            .chart-section, .text-feedback-section {
-                padding: 20px 15px; /* تقليص الحشو الداخلي للبطاقات الكبيرة */
-            }
-
-            .floating-fruit {
-                font-size: 28px !important; /* تصغير الفواكه العائمة حتى لا تشتت الزائر */
-                opacity: 0.2;
-            }
-        }
     </style>
 </head>
 <body>
@@ -332,15 +297,15 @@
         <!-- الهيدر الرئيسي والأزرار التفاعلية -->
         <header class="dash-header">
             <div class="dash-title">
-                <div style="font-size: 35px;">📊</div>
+                <div style="font-size: 40px;">📊</div>
                 <div>
                     <h1>لوحة تحكم MERVI BERRY</h1>
-                    <p style="font-size: 13px; color: #888;">متابعة تقييمات العملاء وآرائهم أولاً بأول</p>
+                    <p style="font-size: 14px; color: #888;">متابعة تقييمات العملاء وآرائهم أولاً بأول (اتصال سحابي حي)</p>
                 </div>
             </div>
             <div class="header-actions">
-                <button class="btn-dash refresh-btn" onclick="loadDashboardData()"><i class="fas fa-sync-alt"></i> تحديث</button>
-                <button class="btn-dash clear-btn" onclick="clearRatings()"><i class="fas fa-trash"></i> مسح</button>
+                <button class="btn-dash refresh-btn" onclick="loadDashboardData()"><i class="fas fa-sync-alt"></i> تحديث البيانات</button>
+                <button class="btn-dash clear-btn" onclick="clearRatings()"><i class="fas fa-trash"></i> مسح البيانات</button>
             </div>
         </header>
 
@@ -352,7 +317,7 @@
             </div>
             <div class="stat-card">
                 <h3>النكهة الأعلى تقييماً</h3>
-                <div class="number" id="top-flavor-name" style="font-size: 20px; color: #2ecc71;">--</div>
+                <div class="number" id="top-flavor-name" style="font-size: 24px; color: #2ecc71;">--</div>
             </div>
             <div class="stat-card">
                 <h3>متوسط التقييم العام للخدمة</h3>
@@ -365,9 +330,10 @@
             
             <!-- تقييم النكهات الست -->
             <div class="chart-section">
-                <h2>معدل تقييم النكهات (من 10) ✨</h2>
+                <h2>معدل تقييم النكهات (من 10) ✨ <span style="font-size: 12px; color: #aaa; font-weight: normal;">(مرر الماوس لرؤية الحركة)</span></h2>
                 <div id="flavors-bars-container">
-                    <!-- سيتم تعبئتها ديناميكياً بواسطة الجافاسكربت -->
+                    <!-- سيتم تعبئتها ديناميكياً بواسطة الجافاسكربت من Firebase -->
+                    <div class="no-data">جاري الاتصال بالسحابة...</div>
                 </div>
             </div>
 
@@ -423,15 +389,62 @@
 
     </div>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            loadDashboardData();
+    <!-- جافا سكريبت السحابي الحديث المدمج مع أكواد حساباتك -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, onSnapshot, query, orderBy, getDocs, writeBatch } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        // إعدادات Firebase الخاصة بقاعدة بياناتك المستخرجة من حسابك
+        const firebaseConfig = {
+            apiKey: "AIzaSyD-__9rRcIZeOwoRqha46pM6uRp8AqYWs4",
+            authDomain: "mervi-berry-db.firebaseapp.com",
+            projectId: "mervi-berry-db",
+            storageBucket: "mervi-berry-db.firebasestorage.app",
+            messagingSenderId: "108906648766",
+            appId: "1:108906648766:web:3912b7995c8aed1f8aa607",
+            measurementId: "G-NXQGFDN52T"
+        };
+
+        // تشغيل ربط السحابة
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const reviewsCollection = collection(db, "reviews");
+
+        // الاستماع المباشر للتغييرات في قاعدة البيانات (Live & Real-time)
+        const q = query(reviewsCollection, orderBy("timestamp", "desc"));
+        
+        onSnapshot(q, (snapshot) => {
+            let fetchedData = [];
+            
+            snapshot.forEach((docSnapshot) => {
+                const itemData = docSnapshot.data();
+                
+                // تحويل توقيت السيرفر لشكل مقروء يتطابق مع تصميمك
+                let itemDate = "وقت غير محدد";
+                if (itemData.timestamp) {
+                    const date = itemData.timestamp.toDate ? itemData.timestamp.toDate() : new Date(itemData.timestamp);
+                    if (date instanceof Date && !isNaN(date)) {
+                        itemDate = date.toLocaleDateString('ar-SA', { hour: '2-digit', minute: '2-digit' });
+                    }
+                } else if (itemData.date) {
+                    itemDate = itemData.date;
+                }
+
+                fetchedData.push({
+                    flavors: itemData.flavors || {},
+                    service: itemData.service || {},
+                    notes: itemData.notes || "",
+                    suggestion: itemData.suggestion || "",
+                    date: itemDate
+                });
+            });
+
+            // تمرير البيانات المجلوبة مباشرة إلى منطق المعالجة والتصميم الخاص بك
+            processDashboardData(fetchedData);
         });
 
-        function loadDashboardData() {
-            const data = JSON.parse(localStorage.getItem('mervi_ratings')) || [];
-            
-            // 1. تحديث إجمالي التقييمات
+        // دالة تحديث الحسابات وبناء الأشرطة والجداول بنفس منطق كودك الأصلي
+        function processDashboardData(data) {
             document.getElementById('total-reviews-count').innerText = data.length;
 
             if(data.length === 0) {
@@ -439,20 +452,16 @@
                 return;
             }
 
-            // مصفوفة النكهات الست الأساسية
             const flavorKeys = ["🫐 التوت الأزرق", "🍓 التوت الأحمر", "🥭 المانجو", "🍉 البطيخ", "🍪 الأوريو", "🍓 الفراولة"];
             let flavorTotals = { "🫐 التوت الأزرق": 0, "🍓 التوت الأحمر": 0, "🥭 المانجو": 0, "🍉 البطيخ": 0, "🍪 الأوريو": 0, "🍓 الفراولة": 0 };
-            
-            // عناصر الخدمة
             let serviceTotals = { "⚡ سرعة الرد": 0, "✨ تعامل الطاقم": 0, "📋 تقييمك لنا": 0 };
 
             let notesHtml = "";
             let suggestionsHtml = "";
 
-            // حساب المجاميع واحتساب القيم الافتراضية المناسبة
             data.forEach(item => {
                 flavorKeys.forEach(f => {
-                    if(item.flavors && item.flavors[f]) {
+                    if(item.flavors && item.flavors[f] !== undefined) {
                         flavorTotals[f] += parseFloat(item.flavors[f]);
                     } else {
                         flavorTotals[f] += 8;
@@ -460,9 +469,9 @@
                 });
 
                 if(item.service) {
-                    serviceTotals["⚡ سرعة الرد"] += (item.service["⚡ سرعة الرد"] !== undefined) ? item.service["⚡ سرعة الرد"] : 4;
-                    serviceTotals["✨ تعامل الطاقم"] += (item.service["✨ تعامل الطاقم"] !== undefined) ? item.service["✨ تعامل الطاقم"] : 5;
-                    serviceTotals["📋 تقييمك لنا"] += (item.service["📋 تقييمك لنا"] !== undefined) ? item.service["📋 تقييمك لنا"] : 5;
+                    serviceTotals["⚡ سرعة الرد"] += (item.service["⚡ سرعة الرد"] !== undefined) ? parseFloat(item.service["⚡ سرعة الرد"]) : 4;
+                    serviceTotals["✨ تعامل الطاقم"] += (item.service["✨ تعامل الطاقم"] !== undefined) ? parseFloat(item.service["✨ تعامل الطاقم"]) : 5;
+                    serviceTotals["📋 تقييمك لنا"] += (item.service["📋 تقييمك لنا"] !== undefined) ? parseFloat(item.service["📋 تقييمك لنا"]) : 5;
                 }
 
                 const itemDate = item.date || "وقت غير محدد";
@@ -474,7 +483,6 @@
                 }
             });
 
-            // 2. معالجة وتوليد أشرطة النكهات مع عزل الإيموجي ليتحرك
             let barsContainer = document.getElementById('flavors-bars-container');
             barsContainer.innerHTML = "";
             let highestRating = -1;
@@ -508,7 +516,6 @@
 
             document.getElementById('top-flavor-name').innerText = bestFlavor + ` (${highestRating})`;
 
-            // 3. تحديث تقييمات الخدمة بالنجوم
             let avgSpeed = (serviceTotals["⚡ سرعة الرد"] / data.length).toFixed(1);
             let avgStaff = (serviceTotals["✨ تعامل الطاقم"] / data.length).toFixed(1);
             let avgOverall = (serviceTotals["📋 تقييمك لنا"] / data.length).toFixed(1);
@@ -519,7 +526,6 @@
 
             document.getElementById('average-general-rating').innerText = `${avgOverall} / 5`;
 
-            // 4. تحديث جداول الملاحظات والاقتراحات
             document.getElementById('notes-feed').innerHTML = notesHtml !== "" ? notesHtml : '<div class="no-data">لا توجد ملاحظات حالياً</div>';
             document.getElementById('suggestions-feed').innerHTML = suggestionsHtml !== "" ? suggestionsHtml : '<div class="no-data">لا توجد اقتراحات حالياً</div>';
         }
@@ -548,10 +554,25 @@
             document.getElementById('suggestions-feed').innerHTML = '<div class="no-data">لا توجد اقتراحات حالياً</div>';
         }
 
-        function clearRatings() {
-            if(confirm("هل أنت متأكد من رغبتك في حذف جميع التقييمات المخزنة نهائياً؟")) {
-                localStorage.removeItem('mervi_ratings');
-                loadDashboardData();
+        // جعل الدوال متاحة للأزرار عند الضغط في لغة HTML
+        window.loadDashboardData = function() {
+            // مع وجود التحديث الحي (onSnapshot) البيانات تتحدث من تلقاء نفسها، ولكن لإرضاء الضغط على الزر:
+            location.reload();
+        }
+
+        window.clearRatings = async function() {
+            if(confirm("هل أنت متأكد من رغبتك في حذف جميع التقييمات المخزنة سحابياً نهائياً؟")) {
+                try {
+                    const querySnapshot = await getDocs(reviewsCollection);
+                    const batch = writeBatch(db);
+                    querySnapshot.forEach((doc) => {
+                        batch.delete(doc.ref);
+                    });
+                    await batch.commit();
+                    alert("تم مسح قاعدة البيانات السحابية بنجاح!");
+                } catch (error) {
+                    alert("حدث خطأ أثناء مسح البيانات من السحاب: " + error.message);
+                }
             }
         }
     </script>
