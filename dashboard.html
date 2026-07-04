@@ -9,14 +9,23 @@
     
     <style>
         :root {
-            --primary-pink: #f2789f;
-            --light-pink: #f9d9e2;
-            --bg-cream: #fff8f6;
-            --text-dark: #4a4a4a;
-            --accent-teal: #7bd5f5;
-            --btn-blue: #3498db;
-            --btn-blue-hover: #2980b9;
+            --bg-cream: #fdfbf7;
             --card-bg: #ffffff;
+            --text-main: #2d2d2d;
+            --text-muted: #8a8a8a;
+            --border-color: #faf3ee;
+            
+            /* ألوان النكهات الباستيلية المتطابقة مع الصورة */
+            --color-mango: #ffc366;
+            --color-watermelon: #ff8fa3;
+            --color-oreo: #72efdd;
+            --color-strawberry: #ff758f;
+            --color-blueberry: #b39ddb;
+            
+            /* ألوان الأيقونات العلويّة */
+            --icon-purple: #b39ddb;
+            --icon-gold: #ffb03b;
+            --icon-teal: #4db6ac;
         }
 
         * {
@@ -28,362 +37,415 @@
 
         body {
             background-color: var(--bg-cream);
-            color: var(--text-dark);
-            padding: 30px 20px;
+            color: var(--text-main);
+            padding: 40px 20px;
             min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
         }
-
-        /* عناصر الفواكه العائمة والمتحركة في الخلفية */
-        .floating-fruit {
-            position: fixed;
-            z-index: 0;
-            pointer-events: none;
-            user-select: none;
-            opacity: 0.4;
-            filter: drop-shadow(0 5px 10px rgba(242, 120, 159, 0.15));
-            animation: floatAnimation 6s ease-in-out infinite;
-        }
-
-        @keyframes floatAnimation {
-            0% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-25px) rotate(15deg); }
-            100% { transform: translateY(0px) rotate(0deg); }
-        }
-
-        .fruit-1 { top: 12%; left: 5%; font-size: 45px; animation-delay: 0s; }
-        .fruit-2 { top: 25%; right: 5%; font-size: 40px; animation-delay: 1.5s; }
-        .fruit-3 { bottom: 15%; left: 6%; font-size: 38px; animation-delay: 3s; }
-        .fruit-4 { bottom: 30%; right: 6%; font-size: 42px; animation-delay: 0.5s; }
 
         .dashboard-container {
             max-width: 1200px;
             margin: 0 auto;
-            position: relative;
-            z-index: 1;
         }
 
-        /* الهيدر */
+        /* الهيدر العلوي المتطابق */
         .dash-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 35px;
+        }
+
+        .dash-title h1 {
+            font-size: 26px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-main);
+        }
+
+        .time-filter {
             background: var(--card-bg);
-            padding: 20px 30px;
-            border-radius: 20px;
-            box-shadow: 0 4px 20px rgba(242, 120, 159, 0.1);
-            margin-bottom: 30px;
-        }
-
-        .dash-title {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            color: var(--primary-pink);
-        }
-
-        .header-actions {
-            display: flex;
-            gap: 12px;
-        }
-
-        .btn-dash {
-            border: none;
-            padding: 10px 22px;
+            padding: 10px 20px;
             border-radius: 50px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 15px;
-            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(165, 140, 120, 0.04);
             display: flex;
             align-items: center;
-            gap: 8px;
-            color: white;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            gap: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-main);
+            border: 1px solid rgba(0,0,0,0.02);
+            cursor: pointer;
+        }
+        .time-filter i.fa-calendar-alt {
+            color: #ff758f;
         }
 
-        .refresh-btn {
-            background-color: var(--btn-blue);
-        }
-        .refresh-btn:hover {
-            background-color: var(--btn-blue-hover);
-            transform: translateY(-2px);
-        }
-
-        .clear-btn {
-            background-color: #e74c3c;
-        }
-        .clear-btn:hover {
-            background-color: #c0392b;
-            transform: translateY(-2px);
-        }
-
-        /* كروت الإحصائيات السريعة */
+        /* كروت الإحصائيات الأربعة العلوية */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(4, 1fr);
             gap: 20px;
-            margin-bottom: 30px;
+            margin-bottom: 35px;
+        }
+
+        @media (max-width: 992px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 576px) {
+            .stats-grid { grid-template-columns: 1fr; }
         }
 
         .stat-card {
             background: var(--card-bg);
-            padding: 25px;
+            padding: 24px;
             border-radius: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-            text-align: center;
-            border-bottom: 4px solid var(--primary-pink);
+            box-shadow: 0 10px 25px rgba(165, 140, 120, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid rgba(0,0,0,0.01);
         }
 
-        .stat-card h3 { color: #888; font-size: 16px; margin-bottom: 10px; }
-        .stat-card .number { font-size: 32px; font-weight: bold; color: var(--text-dark); }
+        .stat-info h3 {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
 
-        /* قسم التحليلات الرئيسي */
-        .main-grid {
+        .stat-info .number {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+        
+        .stat-info .number-wrapper {
+            display: flex;
+            align-items: baseline;
+        }
+        .stat-info .sub-num {
+            font-size: 16px;
+            color: var(--text-muted);
+            margin-right: 4px;
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+        
+        /* توزيع خلفيات الأيقونات حسب الصورة المرفقة */
+        .stat-icon.mango-style { font-size: 35px; background: transparent; }
+        .stat-icon.comment-style { background: #e0f2f1; color: var(--icon-teal); }
+        .stat-icon.star-style { background: #fff8e1; color: var(--icon-gold); }
+        .stat-icon.users-style { background: #f3e5f5; color: var(--icon-purple); }
+
+        /* منطقة المحتوى الرئيسية (قسمين) */
+        .main-content-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1.8fr 1.2fr;
             gap: 30px;
-            margin-bottom: 30px;
         }
 
         @media (max-width: 900px) {
-            .main-grid { grid-template-columns: 1fr; }
+            .main-content-grid { grid-template-columns: 1fr; }
         }
 
-        .chart-section {
+        .dashboard-section-card {
             background: var(--card-bg);
             padding: 30px;
             border-radius: 24px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
-        }
-
-        .chart-section h2 {
-            font-size: 20px;
-            margin-bottom: 20px;
-            border-right: 4px solid var(--primary-pink);
-            padding-right: 10px;
-            color: #333;
-        }
-
-        /* تصميم أشرطة تقييم النكهات والحركات التفاعلية */
-        .flavor-progress-item {
-            margin-bottom: 18px;
-            cursor: pointer;
-        }
-
-        .flavor-meta {
+            box-shadow: 0 10px 30px rgba(165, 140, 120, 0.04);
+            border: 1px solid rgba(0,0,0,0.01);
             display: flex;
-            justify-content: space-between;
-            margin-bottom: 5px;
-            font-weight: bold;
+            flex-direction: column;
         }
 
-        /* حركية اهتزاز الإيموجي عند تمرير الماوس */
-        .flavor-emoji {
-            display: inline-block;
-            transition: transform 0.2s;
-        }
-
-        .flavor-progress-item:hover .flavor-emoji {
-            animation: wiggle 0.5s ease-in-out infinite;
-        }
-
-        @keyframes wiggle {
-            0% { transform: rotate(0deg) scale(1.1); }
-            25% { transform: rotate(12deg) scale(1.1); }
-            75% { transform: rotate(-12deg) scale(1.1); }
-            100% { transform: rotate(0deg) scale(1.1); }
-        }
-
-        .bar-container {
-            background: #eee;
-            height: 12px;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .bar-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--light-pink), var(--primary-pink));
-            width: 0%;
-            transition: width 1s ease-in-out;
-            border-radius: 10px;
-        }
-
-        /* تصميم تقييم الخدمات */
-        .service-stat-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 0;
-            border-bottom: 1px dashed #f5e6e8;
-        }
-        .service-stat-row:last-child { border: none; }
-
-        .stars-display { color: #ffca28; font-size: 18px; }
-
-        /* جداول الملاحظات والاقتراحات */
-        .text-feedback-section {
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: 24px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+        .dashboard-section-card h2 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-main);
             margin-bottom: 30px;
         }
 
-        .feedback-tables-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
+        /* تصميم الرسم البياني العمودي المصمم خصيصاً ليطابق الصورة */
+        .chart-axis-wrapper {
+            display: flex;
+            height: 280px;
+            margin-bottom: 20px;
         }
 
-        @media (max-width: 768px) {
-            .feedback-tables-grid { grid-template-columns: 1fr; }
+        .y-axis-labels {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 220px;
+            color: #cccccc;
+            font-size: 13px;
+            width: 30px;
+            padding-left: 5px;
         }
 
-        .table-wrapper {
-            background: #fff8f9;
-            border-radius: 15px;
-            padding: 15px;
-            border: 1px solid #f9ebef;
-            max-height: 400px;
-            overflow-y: auto;
+        .chart-bars-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-end;
+            flex: 1;
+            height: 220px;
+            border-bottom: 2px solid #f5ebe6;
+            position: relative;
+            padding: 0 10px;
         }
 
-        .table-wrapper h3 {
-            font-size: 16px;
-            margin-bottom: 12px;
-            color: var(--primary-pink);
+        .bar-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            height: 100%;
+            position: relative;
+            width: 60px;
+        }
+
+        .bar-value {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 8px;
+        }
+
+        .vertical-bar-column {
+            width: 36px;
+            border-radius: 20px 20px 0 0;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            position: relative;
+            height: 0%; /* يتم تغييرها جافاسكربت */
+            transition: height 1s cubic-bezier(0.1, 1, 0.1, 1);
+        }
+
+        .bar-emoji-circle {
+            width: 32px;
+            height: 32px;
+            background: #ffffff;
+            border-radius: 50%;
             display: flex;
             align-items: center;
-            gap: 8px;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+            position: absolute;
+            bottom: -16px;
+            z-index: 3;
+            font-size: 16px;
         }
 
-        .feedback-list-item {
-            background: #fff;
-            padding: 12px;
-            border-radius: 10px;
-            margin-bottom: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.01);
-            border-right: 3px solid #b2ebf2;
+        .bar-label-name {
+            position: absolute;
+            bottom: -45px;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-main);
+            white-space: nowrap;
+        }
+
+        /* قسم التعليقات والأراء المستلمة */
+        .comments-list {
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            max-height: 320px;
+            margin-bottom: 20px;
+            padding-left: 5px;
+        }
+
+        .comment-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .comment-item:last-child {
+            border-bottom: none;
+        }
+
+        .comment-heart-btn {
+            color: #ff758f;
+            font-size: 20px;
+            cursor: pointer;
+            margin-top: 2px;
+            transition: transform 0.2s;
+        }
+        .comment-heart-btn:hover {
+            transform: scale(1.15);
+        }
+
+        .comment-details {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .comment-text-body {
             font-size: 14px;
-        }
-        .feedback-list-item .date {
-            font-size: 11px;
-            color: #999;
-            margin-bottom: 4px;
-            display: block;
+            font-weight: 500;
+            color: var(--text-main);
+            line-height: 1.5;
         }
 
-        .no-data {
-            text-align: center;
-            color: #999;
-            padding: 40px;
-            font-style: italic;
+        .comment-time-stamp {
+            font-size: 12px;
+            color: var(--text-muted);
         }
+
+        .view-all-comments-btn {
+            background: #fdfbf7;
+            border: 1px solid #fae7e8;
+            color: var(--text-main);
+            padding: 12px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+            transition: all 0.3s ease;
+            margin-top: auto;
+        }
+        .view-all-comments-btn:hover {
+            background: #fff0f2;
+            border-color: #ff758f;
+        }
+
+        .no-data-placeholder {
+            text-align: center;
+            color: var(--text-muted);
+            padding: 40px 0;
+            font-style: italic;
+            font-size: 14px;
+            width: 100%;
+        }
+
+        /* تحسين مظهر شريط التمرير */
+        .comments-list::-webkit-scrollbar { width: 5px; }
+        .comments-list::-webkit-scrollbar-track { background: transparent; }
+        .comments-list::-webkit-scrollbar-thumb { background: #fae7e8; border-radius: 10px; }
     </style>
 </head>
 <body>
 
-    <div class="floating-fruit fruit-1">🍓</div>
-    <div class="floating-fruit fruit-2">🥭</div>
-    <div class="floating-fruit fruit-3">🍉</div>
-    <div class="floating-fruit fruit-4">🫐</div>
-
     <div class="dashboard-container">
         
+        <!-- الهيدر الرئيسي -->
         <header class="dash-header">
             <div class="dash-title">
-                <div style="font-size: 40px;">📊</div>
-                <div>
-                    <h1>لوحة تحكم MERVI BERRY</h1>
-                    <p style="font-size: 14px; color: #888;">متابعة تقييمات العملاء وآرائهم أولاً بأول (اتصال سحابي حي)</p>
-                </div>
+                <h1>لوحة التحكم 🧊</h1>
             </div>
-            <div class="header-actions">
-                <button class="btn-dash refresh-btn" onclick="loadDashboardData()"><i class="fas fa-sync-alt"></i> تحديث البيانات</button>
-                <button class="btn-dash clear-btn" onclick="clearRatings()"><i class="fas fa-trash"></i> مسح البيانات</button>
+            <div class="time-filter" onclick="location.reload();">
+                <i class="far fa-calendar-alt"></i>
+                <span>آخر 30 يوم</span>
+                <i class="fas fa-chevron-down" style="font-size: 11px; color: #aaa; margin-right: 5px;"></i>
             </div>
         </header>
 
+        <!-- كروت الإحصائيات الأربعة المتطابقة مع الصورة المرفقة -->
         <div class="stats-grid">
-            <div class="stat-card">
-                <h3>إجمالي التقييمات المستلمة</h3>
-                <div class="number" id="total-reviews-count">0</div>
-            </div>
-            <div class="stat-card">
-                <h3>النكهة الأعلى تقييماً</h3>
-                <div class="number" id="top-flavor-name" style="font-size: 24px; color: #2ecc71;">--</div>
-            </div>
-            <div class="stat-card">
-                <h3>متوسط التقييم العام للخدمة</h3>
-                <div class="number" id="average-general-rating" style="color: #ffca28;">0 / 5</div>
-            </div>
-        </div>
-
-        <div class="main-grid">
             
-            <div class="chart-section">
-                <h2>معدل تقييم النكهات (من 10) ✨ <span style="font-size: 12px; color: #aaa; font-weight: normal;">(مرر الماوس لرؤية الحركة)</span></h2>
-                <div id="flavors-bars-container">
-                    <div class="no-data">جاري الاتصال بالسحابة...</div>
+            <!-- الكرت الأول: أكثر نكهة محبوبة -->
+            <div class="stat-card">
+                <div class="stat-info">
+                    <h3>أكثر نكهة محبوبة</h3>
+                    <div class="number" id="top-flavor-name" style="font-size: 24px;">--</div>
                 </div>
+                <div class="stat-icon mango-style" id="top-flavor-emoji">🥭</div>
             </div>
 
-            <div class="chart-section">
-                <h2>تقييم تجربة العميل (المحطة الأخيرة) ⚡</h2>
-                <div id="service-metrics-container">
-                    
-                    <div class="service-stat-row">
-                        <div style="font-weight: bold;">⚡ سرعة الرد</div>
-                        <div class="stars-display" id="star-speed">--</div>
-                    </div>
-
-                    <div class="service-stat-row">
-                        <div style="font-weight: bold;">✨ تعامل الطاقم</div>
-                        <div class="stars-display" id="star-staff">--</div>
-                    </div>
-
-                    <div class="service-stat-row">
-                        <div style="font-weight: bold;">📋 تقييمك لنا</div>
-                        <div class="stars-display" id="star-overall">--</div>
-                    </div>
-
+            <!-- الكرت الثاني: إجمالي التعليقات -->
+            <div class="stat-card">
+                <div class="stat-info">
+                    <h3>إجمالي التعليقات</h3>
+                    <div class="number" id="total-comments-count">0</div>
                 </div>
+                <div class="stat-icon comment-style"><i class="far fa-comment-dots"></i></div>
+            </div>
+
+            <!-- الكرت الثالث: متوسط التقييم العام -->
+            <div class="stat-card">
+                <div class="stat-info">
+                    <h3>متوسط التقييم العام</h3>
+                    <div class="number-wrapper">
+                        <span class="number" id="average-general-rating">0</span>
+                        <span class="sub-num">/10</span>
+                    </div>
+                </div>
+                <div class="stat-icon star-style"><i class="fas fa-star"></i></div>
+            </div>
+
+            <!-- الكرت الرابع: إجمالي التقييمات -->
+            <div class="stat-card">
+                <div class="stat-info">
+                    <h3>إجمالي التقييمات</h3>
+                    <div class="number" id="total-reviews-count">0</div>
+                </div>
+                <div class="stat-icon users-style"><i class="fas fa-users"></i></div>
             </div>
 
         </div>
 
-        <div class="text-feedback-section">
-            <h2 style="font-size: 20px; margin-bottom: 20px; border-right: 4px solid var(--accent-teal); padding-right: 10px;">الآراء والاقتراحات المستلمة 💬</h2>
+        <!-- منطقة المحتوى الرئيسية -->
+        <div class="main-content-grid">
             
-            <div class="feedback-tables-grid">
+            <!-- الرسم البياني العمودي المتطور لنكهات الخمسة الرئيسية -->
+            <div class="dashboard-section-card">
+                <h2>متوسط تقييم كل نكهة</h2>
                 
-                <div class="table-wrapper">
-                    <h3><i class="fas fa-comment-alt"></i> الملاحظات والشكاوي (هل هناك اي ملاحظات؟)</h3>
-                    <div id="notes-feed">
-                        <div class="no-data">لا توجد ملاحظات حالياً</div>
+                <div class="chart-axis-wrapper">
+                    <!-- عمود الأرقام الجانبية للرسم البياني -->
+                    <div class="y-axis-labels">
+                        <span>10</span>
+                        <span>8</span>
+                        <span>6</span>
+                        <span>4</span>
+                        <span>2</span>
+                        <span>0</span>
+                    </div>
+                    
+                    <!-- الحاوية المرنة للأعمدة الملونة -->
+                    <div class="chart-bars-container" id="vertical-chart-flex">
+                        <div class="no-data-placeholder">جاري تحميل البيانات السحابية...</div>
                     </div>
                 </div>
-
-                <div class="table-wrapper">
-                    <h3><i class="fas fa-lightbulb"></i> نكهات يطلبها العملاء مستقبلاً 💡</h3>
-                    <div id="suggestions-feed">
-                        <div class="no-data">لا توجد اقتراحات حالياً</div>
-                    </div>
-                </div>
-
             </div>
+
+            <!-- قسم آخر التعليقات المستلمة بشكلها الراقي -->
+            <div class="dashboard-section-card">
+                <h2>آخر التعليقات</h2>
+                
+                <div class="comments-list" id="unified-comments-feed">
+                    <div class="no-data-placeholder">لا توجد تعليقات حتى الآن</div>
+                </div>
+                
+                <button class="view-all-comments-btn" onclick="alert('يتم عرض جميع التعليقات الحية تلقائياً في القائمة أعلاه!')">عرض كل التعليقات</button>
+            </div>
+
         </div>
 
     </div>
 
+    <!-- كود الجافا سكريبت السحابي المطور المتصل بـ Firebase لترجمة التصميم الجديد -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, onSnapshot, query, orderBy, getDocs, writeBatch } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // إعدادات Firebase المصححة والمطابقة تماماً لصفحة التقييم الناجحة
+        // إعدادات قاعدة البيانات السحابية الحالية المستقرة والمفعلة
         const firebaseConfig = {
             apiKey: "AIzaSyD--9rRcIZeOwoRqha46pM6uRp8AqYWs4",
             authDomain: "mervi-berry-db.firebaseapp.com",
@@ -394,12 +456,11 @@
             measurementId: "G-NXQGFDN52T"
         };
 
-        // تشغيل ربط السحابة
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         const reviewsCollection = collection(db, "reviews");
 
-        // تم التعديل هنا ليتم الترتيب بواسطة حقل الـ id الفعلي المتواجد بالمستندات بدلاً من timestamp
+        // الاتصال المباشر والترتيب حسب الـ id للحصول على أحدث التقييمات
         const q = query(reviewsCollection, orderBy("id", "desc"));
         
         onSnapshot(q, (snapshot) => {
@@ -408,7 +469,7 @@
             snapshot.forEach((docSnapshot) => {
                 const itemData = docSnapshot.data();
                 
-                let itemDate = "وقت غير محدد";
+                let itemDate = "قبل قليل";
                 if (itemData.date) {
                     itemDate = itemData.date;
                 }
@@ -422,12 +483,12 @@
                 });
             });
 
-            // تمرير البيانات المجلوبة مباشرة إلى منطق المعالجة والتصميم الخاص بك
-            processDashboardData(fetchedData);
+            // تحديث الواجهة الرسومية بناءً على البيانات المستخرجة
+            buildNewDashboardUI(fetchedData);
         });
 
-        // دالة تحديث الحسابات وبناء الأشرطة والجداول بنفس منطق كودك الأصلي
-        function processDashboardData(data) {
+        function buildNewDashboardUI(data) {
+            // 1. تحديث إجمالي التقييمات المستلمة
             document.getElementById('total-reviews-count').innerText = data.length;
 
             if(data.length === 0) {
@@ -435,126 +496,111 @@
                 return;
             }
 
-            const flavorKeys = ["🫐 التوت الأزرق", "🍓 التوت الأحمر", "🥭 المانجو", "🍉 البطيخ", "🍪 الأوريو", "🍓 الفراولة"];
-            let flavorTotals = { "🫐 التوت الأزرق": 0, "🍓 التوت الأحمر": 0, "🥭 المانجو": 0, "🍉 البطيخ": 0, "🍪 الأوريو": 0, "🍓 الفراولة": 0 };
-            let serviceTotals = { "⚡ سرعة الرد": 0, "✨ تعامل الطاقم": 0, "📋 تقييمك لنا": 0 };
+            // النكهات الخمس المطلوب رسمها بيانياً بالترتيب المتواجد بالصورة المرفقة
+            const TargetFlavors = [
+                { key: "🥭 المانجو", color: "var(--color-mango)", emoji: "🥭", name: "المانجو" },
+                { key: "🍉 البطيخ", color: "var(--color-watermelon)", emoji: "🍉", name: "البطيخ" },
+                { key: "🍪 الأوريو", color: "var(--color-oreo)", emoji: "🍪", name: "الأوريو" },
+                { key: "🍓 الفراولة", color: "var(--color-strawberry)", emoji: "🍓", name: "الفراولة" },
+                { key: "🫐 التوت الأزرق", color: "var(--color-blueberry)", emoji: "🫐", name: "التوت الأزرق" }
+            ];
 
-            let notesHtml = "";
-            let suggestionsHtml = "";
+            let flavorTotals = { "🥭 المانجو": 0, "🍉 البطيخ": 0, "🍪 الأوريو": 0, "🍓 الفراولة": 0, "🫐 التوت الأزرق": 0 };
+            let totalCommentsCounter = 0;
+            let commentsHtml = "";
+            let globalScoresSum = 0;
+            let globalScoresCount = 0;
 
             data.forEach(item => {
-                flavorKeys.forEach(f => {
-                    if(item.flavors && item.flavors[f] !== undefined) {
-                        flavorTotals[f] += parseFloat(item.flavors[f]);
-                    } else {
-                        flavorTotals[f] += 8;
-                    }
+                // حساب متوسطات تقييم النكهات
+                TargetFlavors.forEach(f => {
+                    let val = (item.flavors && item.flavors[f.key] !== undefined) ? parseFloat(item.flavors[f.key]) : 8;
+                    flavorTotals[f.key] += val;
+                    globalScoresSum += val;
+                    globalScoresCount++;
                 });
 
-                if(item.service) {
-                    serviceTotals["⚡ سرعة الرد"] += (item.service["⚡ سرعة الرد"] !== undefined) ? parseFloat(item.service["⚡ سرعة الرد"]) : 4;
-                    serviceTotals["✨ تعامل الطاقم"] += (item.service["✨ تعامل الطاقم"] !== undefined) ? parseFloat(item.service["✨ تعامل الطاقم"]) : 5;
-                    serviceTotals["📋 تقييمك لنا"] += (item.service["📋 تقييمك لنا"] !== undefined) ? parseFloat(item.service["📋 تقييمك لنا"]) : 5;
+                // تجميع وحساب إجمالي التعليقات النصية الحقيقية المتواجدة
+                let hasCommentText = false;
+                if(item.notes && item.notes !== "لا يوجد" && item.notes.trim() !== "") {
+                    commentsHtml += `
+                        <div class="comment-item">
+                            <div class="comment-heart-btn"><i class="far fa-heart"></i></div>
+                            <div class="comment-details">
+                                <p class="comment-text-body">${item.notes}</p>
+                                <span class="comment-time-stamp">${item.date}</span>
+                            </div>
+                        </div>`;
+                    hasCommentText = true;
+                }
+                
+                if(item.suggestion && item.suggestion !== "لا يوجد" && item.suggestion.trim() !== "") {
+                    commentsHtml += `
+                        <div class="comment-item">
+                            <div class="comment-heart-btn"><i class="far fa-heart"></i></div>
+                            <div class="comment-details">
+                                <p class="comment-text-body">💡 اقتراح نكهة: ${item.suggestion}</p>
+                                <span class="comment-time-stamp">${item.date}</span>
+                            </div>
+                        </div>`;
+                    hasCommentText = true;
                 }
 
-                const itemDate = item.date || "وقت غير محدد";
-                if(item.notes && item.notes !== "لا يوجد" && item.notes.trim() !== "") {
-                    notesHtml += `<div class="feedback-list-item"><span class="date">${itemDate}</span>${item.notes}</div>`;
-                }
-                if(item.suggestion && item.suggestion !== "لا يوجد" && item.suggestion.trim() !== "") {
-                    suggestionsHtml += `<div class="feedback-list-item" style="border-right-color: var(--primary-pink);"><span class="date">${itemDate}</span>${item.suggestion}</div>`;
+                if(hasCommentText) {
+                    totalCommentsCounter++;
                 }
             });
 
-            let barsContainer = document.getElementById('flavors-bars-container');
-            barsContainer.innerHTML = "";
-            let highestRating = -1;
-            let bestFlavor = "--";
+            // تحديث عداد التعليقات الإجمالي بالكرت العلوي الثاني
+            document.getElementById('total-comments-count').innerText = totalCommentsCounter;
 
-            flavorKeys.forEach(f => {
-                let avg = (flavorTotals[f] / data.length).toFixed(1);
-                let percentage = (avg / 10) * 100;
+            // بناء الأعمدة البيانية العمودية بشكل ديناميكي هندسي متطابق
+            let chartContainer = document.getElementById('vertical-chart-flex');
+            chartContainer.innerHTML = "";
+            
+            let highestRating = -1;
+            let bestFlavorName = "--";
+            let bestFlavorEmoji = "🍦";
+
+            TargetFlavors.forEach(f => {
+                let avg = (flavorTotals[f.key] / data.length).toFixed(1);
+                let heightPercentage = (avg / 10) * 100;
                 
                 if(parseFloat(avg) > highestRating) {
                     highestRating = parseFloat(avg);
-                    bestFlavor = f;
+                    bestFlavorName = f.name;
+                    bestFlavorEmoji = f.emoji;
                 }
 
-                let parts = f.split(" ");
-                let emoji = parts[0];
-                let name = parts.slice(1).join(" ");
-
-                barsContainer.innerHTML += `
-                    <div class="flavor-progress-item">
-                        <div class="flavor-meta">
-                            <span><span class="flavor-emoji">${emoji}</span> ${name}</span>
-                            <span style="color: var(--primary-pink);">${avg} / 10</span>
+                chartContainer.innerHTML += `
+                    <div class="bar-wrapper">
+                        <span class="bar-value">${avg}</span>
+                        <div class="vertical-bar-column" style="height: ${heightPercentage}%; background: ${f.color};">
+                            <div class="bar-emoji-circle">${f.emoji}</div>
                         </div>
-                        <div class="bar-container">
-                            <div class="bar-fill" style="width: ${percentage}%"></div>
-                        </div>
+                        <span class="bar-label-name">${f.name}</span>
                     </div>
                 `;
             });
 
-            document.getElementById('top-flavor-name').innerText = bestFlavor + ` (${highestRating})`;
+            // تحديث الكرت الأول: النكهة الأكثر شعبية
+            document.getElementById('top-flavor-name').innerText = bestFlavorName;
+            document.getElementById('top-flavor-emoji').innerText = bestFlavorEmoji;
 
-            let avgSpeed = (serviceTotals["⚡ سرعة الرد"] / data.length).toFixed(1);
-            let avgStaff = (serviceTotals["✨ تعامل الطاقم"] / data.length).toFixed(1);
-            let avgOverall = (serviceTotals["📋 تقييمك لنا"] / data.length).toFixed(1);
+            // تحديث الكرت الثالث: متوسط التقييم العام الإجمالي من 10
+            let globalAverage = (globalScoresSum / globalScoresCount).toFixed(1);
+            document.getElementById('average-general-rating').innerText = globalAverage;
 
-            document.getElementById('star-speed').innerHTML = generateStarIcons(avgSpeed) + ` (${avgSpeed})`;
-            document.getElementById('star-staff').innerHTML = generateStarIcons(avgStaff) + ` (${avgStaff})`;
-            document.getElementById('star-overall').innerHTML = generateStarIcons(avgOverall) + ` (${avgOverall})`;
-
-            document.getElementById('average-general-rating').innerText = `${avgOverall} / 5`;
-
-            document.getElementById('notes-feed').innerHTML = notesHtml !== "" ? notesHtml : '<div class="no-data">لا توجد ملاحظات حالياً</div>';
-            document.getElementById('suggestions-feed').innerHTML = suggestionsHtml !== "" ? suggestionsHtml : '<div class="no-data">لا توجد اقتراحات حالياً</div>';
-        }
-
-        function generateStarIcons(rating) {
-            let stars = "";
-            let roundRating = Math.round(rating);
-            for(let i = 1; i <= 5; i++) {
-                if(i <= roundRating) {
-                    stars += '<i class="fas fa-star"></i>';
-                } else {
-                    stars += '<i class="far fa-star" style="color:#ccc;"></i>';
-                }
-            }
-            return stars;
+            // تحديث قائمة التعليقات الأخيرة
+            document.getElementById('unified-comments-feed').innerHTML = commentsHtml !== "" ? commentsHtml : '<div class="no-data-placeholder">لا توجد تعليقات نصيّة حالياً</div>';
         }
 
         function renderEmptyState() {
-            document.getElementById('flavors-bars-container').innerHTML = '<div class="no-data">لا توجد بيانات نكهات كافية للحساب</div>';
+            document.getElementById('vertical-chart-flex').innerHTML = '<div class="no-data-placeholder">لا توجد بيانات نكهات كافية حالياً</div>';
             document.getElementById('top-flavor-name').innerText = "--";
-            document.getElementById('average-general-rating').innerText = "0 / 5";
-            document.getElementById('star-speed').innerText = "--";
-            document.getElementById('star-staff').innerText = "--";
-            document.getElementById('star-overall').innerText = "--";
-            document.getElementById('notes-feed').innerHTML = '<div class="no-data">لا توجد ملاحظات حالياً</div>';
-            document.getElementById('suggestions-feed').innerHTML = '<div class="no-data">لا توجد اقتراحات حالياً</div>';
-        }
-
-        window.loadDashboardData = function() {
-            location.reload();
-        }
-
-        window.clearRatings = async function() {
-            if(confirm("هل أنت متأكد من رغبتك في حذف جميع التقييمات المخزنة سحابياً نهائياً؟")) {
-                try {
-                    const querySnapshot = await getDocs(reviewsCollection);
-                    const batch = writeBatch(db);
-                    querySnapshot.forEach((doc) => {
-                        batch.delete(doc.ref);
-                    });
-                    await batch.commit();
-                    alert("تم مسح قاعدة البيانات السحابية بنجاح!");
-                } catch (error) {
-                    alert("حدث خطأ أثناء مسح البيانات من السحاب: " + error.message);
-                }
-            }
+            document.getElementById('total-comments-count').innerText = "0";
+            document.getElementById('average-general-rating').innerText = "0";
+            document.getElementById('unified-comments-feed').innerHTML = '<div class="no-data-placeholder">لا توجد تعليقات حتى الآن</div>';
         }
     </script>
 </body>
