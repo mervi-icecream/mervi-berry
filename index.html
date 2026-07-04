@@ -450,8 +450,8 @@
             <div class="heart-icon" style="color: #ff2a74;">❤️</div>
             <h1 style="color: var(--primary-pink); font-size: 38px; margin-bottom: 20px; font-weight: 700;">شُكْراً لك!</h1>
             <p class="welcome-text" style="font-size: 20px; margin-bottom: 8px; font-weight: 500;">تم استلام تقييمك بنجاح. 🥰</p>
-            <p class="welcome-text" style="font-size: 16px; color: #666; margin-bottom: 30px;">رأيك يساعدنا لنصنع آيسكريم ألذ كل يوم.</p>
-            <h3 style="color: var(--primary-pink); margin-bottom: 15px; font-size: 22px; font-weight: bold;">نتمنى أن نراك قريباً في Mervi Berry!</h3>
+            <p class="welcome-text" style="font-size: 16px; color: #666; margin-bottom: 30px;">رأيك يساعدنا نصنع آيسكريم ألذ كل يوم.</p>
+            <h3 style="color: var(--primary-pink); margin-bottom: 15px; font-size: 22px; font-weight: bold;">نتمنى نراك قريباً في Mervi Berry!</h3>
         </div>
 
     </div>
@@ -462,22 +462,20 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // إعدادات Firebase الخاصة بمشروعك (mervi-berry-db)
+        // إعدادات Firebase المأخوذة من لقطة شاشتك مباشرة
         const firebaseConfig = {
             apiKey: "AIzaSyD--9rRcIZeOwoRqha46pM6uRp8AqYWs4",
             authDomain: "mervi-berry-db.firebaseapp.com",
             projectId: "mervi-berry-db",
-            storageBucket: "mervi-berry-db.appspot.com",
+            storageBucket: "mervi-berry-db.firebasestorage.app",
             messagingSenderId: "1089066487686",
             appId: "1:1089066487686:web:3912b7995c8aed1f8aa607",
             measurementId: "G-NXQGFDN52T"
         };
 
-        // تهيئة Firebase و Firestore
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // جعل الدوال متاحة عالمياً لتعمل مع أزرار الـ HTML المباشرة
         window.navigateTo = function(screenId) {
             const screens = document.querySelectorAll('.screen');
             screens.forEach(screen => screen.classList.remove('active'));
@@ -503,7 +501,6 @@
         }
 
         window.saveAndSubmit = async function() {
-            // تغيير حالة الزر مؤقتاً لحين انتهاء الرفع السحابي
             const submitBtn = document.querySelector("button[onclick='saveAndSubmit()']");
             const originalText = submitBtn.innerHTML;
             submitBtn.disabled = true;
@@ -536,15 +533,11 @@
             };
 
             try {
-                // إرسال البيانات مباشرة لقاعدة بيانات Firestore السحابية بمجلد reviews
                 await addDoc(collection(db, "reviews"), evaluationData);
-                console.log("تم إرسال التقييم إلى السحاب بنجاح!", evaluationData);
-                
-                // التوجه لصفحة الشكر
                 window.navigateTo('page-5');
             } catch (error) {
                 console.error("خطأ أثناء الاتصال بالسحاب: ", error);
-                alert("حدث خطأ في الاتصال، يرجى المحاولة مرة أخرى.");
+                alert("حدث خطأ، يرجى المحاولة مرة أخرى.");
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = originalText;
             }
