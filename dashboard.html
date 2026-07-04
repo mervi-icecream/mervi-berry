@@ -286,7 +286,6 @@
 </head>
 <body>
 
-    <!-- الفواكه العائمة في الخلفية -->
     <div class="floating-fruit fruit-1">🍓</div>
     <div class="floating-fruit fruit-2">🥭</div>
     <div class="floating-fruit fruit-3">🍉</div>
@@ -294,7 +293,6 @@
 
     <div class="dashboard-container">
         
-        <!-- الهيدر الرئيسي والأزرار التفاعلية -->
         <header class="dash-header">
             <div class="dash-title">
                 <div style="font-size: 40px;">📊</div>
@@ -309,7 +307,6 @@
             </div>
         </header>
 
-        <!-- كروت الإحصائيات السريعة -->
         <div class="stats-grid">
             <div class="stat-card">
                 <h3>إجمالي التقييمات المستلمة</h3>
@@ -325,19 +322,15 @@
             </div>
         </div>
 
-        <!-- قسم التحليلات الرئيسي (نكهات وخدمات) -->
         <div class="main-grid">
             
-            <!-- تقييم النكهات الست -->
             <div class="chart-section">
                 <h2>معدل تقييم النكهات (من 10) ✨ <span style="font-size: 12px; color: #aaa; font-weight: normal;">(مرر الماوس لرؤية الحركة)</span></h2>
                 <div id="flavors-bars-container">
-                    <!-- سيتم تعبئتها ديناميكياً بواسطة الجافاسكربت من Firebase -->
                     <div class="no-data">جاري الاتصال بالسحابة...</div>
                 </div>
             </div>
 
-            <!-- تقييم تجربة الخدمة -->
             <div class="chart-section">
                 <h2>تقييم تجربة العميل (المحطة الأخيرة) ⚡</h2>
                 <div id="service-metrics-container">
@@ -362,13 +355,11 @@
 
         </div>
 
-        <!-- قسم الملاحظات واقتراحات النكهات المستقبلية -->
         <div class="text-feedback-section">
             <h2 style="font-size: 20px; margin-bottom: 20px; border-right: 4px solid var(--accent-teal); padding-right: 10px;">الآراء والاقتراحات المستلمة 💬</h2>
             
             <div class="feedback-tables-grid">
                 
-                <!-- صندوق الملاحظات العامة -->
                 <div class="table-wrapper">
                     <h3><i class="fas fa-comment-alt"></i> الملاحظات والشكاوي (هل هناك اي ملاحظات؟)</h3>
                     <div id="notes-feed">
@@ -376,7 +367,6 @@
                     </div>
                 </div>
 
-                <!-- صندوق نكهات المستقبل -->
                 <div class="table-wrapper">
                     <h3><i class="fas fa-lightbulb"></i> نكهات يطلبها العملاء مستقبلاً 💡</h3>
                     <div id="suggestions-feed">
@@ -389,19 +379,18 @@
 
     </div>
 
-    <!-- جافا سكريبت السحابي الحديث المدمج مع أكواد حساباتك -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, onSnapshot, query, orderBy, getDocs, writeBatch } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // إعدادات Firebase الخاصة بقاعدة بياناتك المستخرجة من حسابك
+        // إعدادات Firebase المصححة والمطابقة تماماً لصفحة التقييم الناجحة
         const firebaseConfig = {
-            apiKey: "AIzaSyD-__9rRcIZeOwoRqha46pM6uRp8AqYWs4",
+            apiKey: "AIzaSyD--9rRcIZeOwoRqha46pM6uRp8AqYWs4",
             authDomain: "mervi-berry-db.firebaseapp.com",
             projectId: "mervi-berry-db",
             storageBucket: "mervi-berry-db.firebasestorage.app",
-            messagingSenderId: "108906648766",
-            appId: "1:108906648766:web:3912b7995c8aed1f8aa607",
+            messagingSenderId: "1089066487686",
+            appId: "1:1089066487686:web:3912b7995c8aed1f8aa607",
             measurementId: "G-NXQGFDN52T"
         };
 
@@ -410,8 +399,8 @@
         const db = getFirestore(app);
         const reviewsCollection = collection(db, "reviews");
 
-        // الاستماع المباشر للتغييرات في قاعدة البيانات (Live & Real-time)
-        const q = query(reviewsCollection, orderBy("timestamp", "desc"));
+        // تم التعديل هنا ليتم الترتيب بواسطة حقل الـ id الفعلي المتواجد بالمستندات بدلاً من timestamp
+        const q = query(reviewsCollection, orderBy("id", "desc"));
         
         onSnapshot(q, (snapshot) => {
             let fetchedData = [];
@@ -419,14 +408,8 @@
             snapshot.forEach((docSnapshot) => {
                 const itemData = docSnapshot.data();
                 
-                // تحويل توقيت السيرفر لشكل مقروء يتطابق مع تصميمك
                 let itemDate = "وقت غير محدد";
-                if (itemData.timestamp) {
-                    const date = itemData.timestamp.toDate ? itemData.timestamp.toDate() : new Date(itemData.timestamp);
-                    if (date instanceof Date && !isNaN(date)) {
-                        itemDate = date.toLocaleDateString('ar-SA', { hour: '2-digit', minute: '2-digit' });
-                    }
-                } else if (itemData.date) {
+                if (itemData.date) {
                     itemDate = itemData.date;
                 }
 
@@ -554,9 +537,7 @@
             document.getElementById('suggestions-feed').innerHTML = '<div class="no-data">لا توجد اقتراحات حالياً</div>';
         }
 
-        // جعل الدوال متاحة للأزرار عند الضغط في لغة HTML
         window.loadDashboardData = function() {
-            // مع وجود التحديث الحي (onSnapshot) البيانات تتحدث من تلقاء نفسها، ولكن لإرضاء الضغط على الزر:
             location.reload();
         }
 
