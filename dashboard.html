@@ -41,7 +41,7 @@
             z-index: 0;
             pointer-events: none;
             user-select: none;
-            opacity: 0.4;
+            opacity: 0.3;
             filter: drop-shadow(0 5px 10px rgba(242, 120, 159, 0.15));
             animation: floatAnimation 6s ease-in-out infinite;
         }
@@ -103,21 +103,11 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         }
 
-        .refresh-btn {
-            background-color: var(--btn-blue);
-        }
-        .refresh-btn:hover {
-            background-color: var(--btn-blue-hover);
-            transform: translateY(-2px);
-        }
+        .refresh-btn { background-color: var(--btn-blue); }
+        .refresh-btn:hover { background-color: var(--btn-blue-hover); transform: translateY(-2px); }
 
-        .clear-btn {
-            background-color: #e74c3c;
-        }
-        .clear-btn:hover {
-            background-color: #c0392b;
-            transform: translateY(-2px);
-        }
+        .clear-btn { background-color: #e74c3c; }
+        .clear-btn:hover { background-color: #c0392b; transform: translateY(-2px); }
 
         /* كروت الإحصائيات السريعة */
         .stats-grid {
@@ -145,10 +135,6 @@
             grid-template-columns: 1fr 1fr;
             gap: 30px;
             margin-bottom: 30px;
-        }
-
-        @media (max-width: 900px) {
-            .main-grid { grid-template-columns: 1fr; }
         }
 
         .chart-section {
@@ -220,7 +206,6 @@
             border-bottom: 1px dashed #f5e6e8;
         }
         .service-stat-row:last-child { border: none; }
-
         .stars-display { color: #ffca28; font-size: 18px; }
 
         /* جداول الملاحظات والاقتراحات */
@@ -236,10 +221,6 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 20px;
-        }
-
-        @media (max-width: 768px) {
-            .feedback-tables-grid { grid-template-columns: 1fr; }
         }
 
         .table-wrapper {
@@ -282,6 +263,60 @@
             padding: 40px;
             font-style: italic;
         }
+
+        /* ======================================================= */
+        /* 📱 شاشات الهواتف والأجهزة اللوحية (Media Queries) 📱 */
+        /* ======================================================= */
+        @media (max-width: 900px) {
+            .main-grid {
+                grid-template-columns: 1fr; /* تحويل النكهات والخدمات لعمود واحد */
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 15px 10px; /* تقليص مساحات الهوامش الخارجية */
+            }
+
+            .dash-header {
+                flex-direction: column; /* جعل الهيدر عمودي في الهاتف */
+                text-align: center;
+                gap: 15px;
+                padding: 20px;
+            }
+
+            .dash-title {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .header-actions {
+                width: 100%;
+                justify-content: center;
+                gap: 10px;
+            }
+
+            .btn-dash {
+                flex: 1; /* جعل الأزرار تأخذ مساحات متساوية ومتناسقة مريحة للمس */
+                justify-content: center;
+                font-size: 14px;
+                padding: 12px 10px;
+            }
+
+            .feedback-tables-grid {
+                grid-template-columns: 1fr; /* تحويل صناديق الملاحظات لعمود واحد */
+            }
+
+            .chart-section, .text-feedback-section {
+                padding: 20px 15px; /* تقليص الحشو الداخلي للبطاقات الكبيرة */
+            }
+
+            .floating-fruit {
+                font-size: 28px !important; /* تصغير الفواكه العائمة حتى لا تشتت الزائر */
+                opacity: 0.2;
+            }
+        }
     </style>
 </head>
 <body>
@@ -297,15 +332,15 @@
         <!-- الهيدر الرئيسي والأزرار التفاعلية -->
         <header class="dash-header">
             <div class="dash-title">
-                <div style="font-size: 40px;">📊</div>
+                <div style="font-size: 35px;">📊</div>
                 <div>
                     <h1>لوحة تحكم MERVI BERRY</h1>
-                    <p style="font-size: 14px; color: #888;">متابعة تقييمات العملاء وآرائهم أولاً بأول</p>
+                    <p style="font-size: 13px; color: #888;">متابعة تقييمات العملاء وآرائهم أولاً بأول</p>
                 </div>
             </div>
             <div class="header-actions">
-                <button class="btn-dash refresh-btn" onclick="loadDashboardData()"><i class="fas fa-sync-alt"></i> تحديث البيانات</button>
-                <button class="btn-dash clear-btn" onclick="clearRatings()"><i class="fas fa-trash"></i> مسح البيانات</button>
+                <button class="btn-dash refresh-btn" onclick="loadDashboardData()"><i class="fas fa-sync-alt"></i> تحديث</button>
+                <button class="btn-dash clear-btn" onclick="clearRatings()"><i class="fas fa-trash"></i> مسح</button>
             </div>
         </header>
 
@@ -317,7 +352,7 @@
             </div>
             <div class="stat-card">
                 <h3>النكهة الأعلى تقييماً</h3>
-                <div class="number" id="top-flavor-name" style="font-size: 24px; color: #2ecc71;">--</div>
+                <div class="number" id="top-flavor-name" style="font-size: 20px; color: #2ecc71;">--</div>
             </div>
             <div class="stat-card">
                 <h3>متوسط التقييم العام للخدمة</h3>
@@ -330,7 +365,7 @@
             
             <!-- تقييم النكهات الست -->
             <div class="chart-section">
-                <h2>معدل تقييم النكهات (من 10) ✨ <span style="font-size: 12px; color: #aaa; font-weight: normal;">(مرر الماوس لرؤية الحركة)</span></h2>
+                <h2>معدل تقييم النكهات (من 10) ✨</h2>
                 <div id="flavors-bars-container">
                     <!-- سيتم تعبئتها ديناميكياً بواسطة الجافاسكربت -->
                 </div>
@@ -414,7 +449,7 @@
             let notesHtml = "";
             let suggestionsHtml = "";
 
-            // حساب المجاميع
+            // حساب المجاميع واحتساب القيم الافتراضية المناسبة
             data.forEach(item => {
                 flavorKeys.forEach(f => {
                     if(item.flavors && item.flavors[f]) {
@@ -454,7 +489,6 @@
                     bestFlavor = f;
                 }
 
-                // فصل الإيموجي عن اسم النكهة لعزل تأثير الحركة
                 let parts = f.split(" ");
                 let emoji = parts[0];
                 let name = parts.slice(1).join(" ");
